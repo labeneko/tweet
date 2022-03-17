@@ -29,9 +29,28 @@ export async function uploadMedia(mediaPaths: string[]): Promise<string[]> {
 
     try {
       const promises = mediaPaths.map(async path => {
-        const media = fs.readFileSync(path)
-        // TODO: chunked
-        return await client.post('media/upload', {media})
+        const mediaType = 'video/mp4'
+        const mediaData = fs.readFileSync(path)
+        const mediaSize = fs.statSync(path).size
+        let mediaId = await client
+          .post('media/upload', {
+            command: 'INIT',
+            total_bytes: mediaSize,
+            media_type: mediaType
+          })
+          .then(data => data.media_id_string)
+        mediaId = await client
+          .post('media/upload', {
+            command: 'APPEND',
+            media_id: mediaId,
+            media: mediaData,
+            segment_index: 0
+          })
+          .then(data => data.media_id_string)
+        return await client.post('media/upload', {
+          command: 'FINALIZE',
+          media_id: mediaId
+        })
       })
 
       const responses = await Promise.all(promises)
