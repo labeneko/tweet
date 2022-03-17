@@ -27518,21 +27518,20 @@ function uploadMedia(mediaPaths) {
                     const mediaType = 'video/mp4';
                     const mediaData = fs.readFileSync(path);
                     const mediaSize = fs.statSync(path).size;
-                    let mediaId = yield client
+                    let data = yield client
                         .post('media/upload', {
                         command: 'INIT',
                         total_bytes: mediaSize,
                         media_type: mediaType
-                    })
-                        .then(data => data.media_id_string);
-                    mediaId = yield client
+                    });
+                    let mediaId = yield data.media_id_string;
+                    yield client
                         .post('media/upload', {
                         command: 'APPEND',
                         media_id: mediaId,
                         media: mediaData,
                         segment_index: 0
-                    })
-                        .then(data => data.media_id_string);
+                    });
                     return yield client.post('media/upload', {
                         command: 'FINALIZE',
                         media_id: mediaId
@@ -27545,7 +27544,7 @@ function uploadMedia(mediaPaths) {
                 }));
             }
             catch (error) {
-                reject(new Error(error.messages.toString()));
+                reject(new Error(error.message.toString()));
             }
         }));
     });
