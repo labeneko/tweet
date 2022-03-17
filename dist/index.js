@@ -27545,7 +27545,7 @@ function uploadMedia(mediaPaths) {
                 }));
             }
             catch (error) {
-                reject(new Error(error.message));
+                reject(new Error(error.messages.toString()));
             }
         }));
     });
