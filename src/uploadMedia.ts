@@ -61,8 +61,8 @@ export async function uploadMedia(mediaPaths: string[]): Promise<string[]> {
           return x.media_id_string
         })
       )
-    } catch (error) {
-      reject(new Error('upload failed'))
+    } catch (error: any) {
+      reject(new Error(error.toString()))
     }
   })
 }
