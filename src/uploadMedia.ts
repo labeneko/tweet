@@ -32,7 +32,7 @@ export async function uploadMedia(mediaPaths: string[]): Promise<string[]> {
         const mediaType = 'video/mp4'
         const mediaData = fs.readFileSync(path)
         const mediaSize = fs.statSync(path).size
-        core.setOutput('mediaSize', mediaSize);
+        core.setOutput('mediaSize', mediaSize)
         let mediaId = await client
           .post('media/upload', {
             command: 'INIT',
@@ -40,6 +40,7 @@ export async function uploadMedia(mediaPaths: string[]): Promise<string[]> {
             media_type: mediaType
           })
           .then(data => data.media_id_string)
+        new Error('media id: ' + mediaId)
         mediaId = await client
           .post('media/upload', {
             command: 'APPEND',

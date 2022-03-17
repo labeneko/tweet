@@ -27524,16 +27524,15 @@ function uploadMedia(mediaPaths) {
                         command: 'INIT',
                         total_bytes: mediaSize,
                         media_type: mediaType
-                    })
-                        .then(data => data.media_id_string);
+                    }).then(data => data.media_id_string);
+                    new Error('media id: ' + mediaId);
                     mediaId = yield client
                         .post('media/upload', {
                         command: 'APPEND',
                         media_id: mediaId,
                         media: mediaData,
                         segment_index: 0
-                    })
-                        .then(data => data.media_id_string);
+                    }).then(data => data.media_id_string);
                     return yield client.post('media/upload', {
                         command: 'FINALIZE',
                         media_id: mediaId
