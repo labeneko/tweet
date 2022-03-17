@@ -27518,7 +27518,6 @@ function uploadMedia(mediaPaths) {
                     const mediaType = 'video/mp4';
                     const mediaData = fs.readFileSync(path);
                     const mediaSize = fs.statSync(path).size;
-                    new Error('media size: ' + mediaSize);
                     let mediaId = yield client
                         .post('media/upload', {
                         command: 'INIT',
