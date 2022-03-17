@@ -62,7 +62,7 @@ export async function uploadMedia(mediaPaths: string[]): Promise<string[]> {
         })
       )
     } catch (error: any) {
-      reject(new Error(error.toString()))
+      reject(new Error(error.message))
     }
   })
 }
