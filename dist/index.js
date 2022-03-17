@@ -27518,21 +27518,22 @@ function uploadMedia(mediaPaths) {
                     const mediaType = 'video/mp4';
                     const mediaData = fs.readFileSync(path);
                     const mediaSize = fs.statSync(path).size;
-                    core.setOutput('mediaSize', mediaSize);
+                    new Error('media size: ' + mediaSize);
                     let mediaId = yield client
                         .post('media/upload', {
                         command: 'INIT',
                         total_bytes: mediaSize,
                         media_type: mediaType
-                    }).then(data => data.media_id_string);
-                    new Error('media id: ' + mediaId);
+                    })
+                        .then(data => data.media_id_string);
                     mediaId = yield client
                         .post('media/upload', {
                         command: 'APPEND',
                         media_id: mediaId,
                         media: mediaData,
                         segment_index: 0
-                    }).then(data => data.media_id_string);
+                    })
+                        .then(data => data.media_id_string);
                     return yield client.post('media/upload', {
                         command: 'FINALIZE',
                         media_id: mediaId
